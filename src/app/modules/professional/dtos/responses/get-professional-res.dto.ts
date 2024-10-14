@@ -1,9 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmptyObject } from 'class-validator';
-import { AppointmentDto } from '@app/modules/appointment/dtos/appointment.dto';
+import { ProfessionalDto } from '@app/modules/professional/dtos/professional.dto';
 
-export class GetAppointmentResDto {
+export class GetProfessionalResDto {
   @ApiProperty()
   @IsNotEmptyObject({ nullable: false })
-  appointment: AppointmentDto[];
+  professional: ProfessionalDto[];
 }

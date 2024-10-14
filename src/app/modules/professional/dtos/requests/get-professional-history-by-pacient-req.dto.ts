@@ -1,18 +1,19 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsOptional, IsDateString } from 'class-validator';
+import { IsOptional, IsString, IsDateString } from 'class-validator';
 
-export class GetAppointmentReqDto {
+export class GetProfessionalHistoryByPacientDto {
     @ApiProperty({ required: false })
+    @IsString()
     @IsOptional()
     patientId?: string;
-  
-    @ApiProperty({ required: false })
-    @IsDateString()
-    @IsOptional()
-    startDate?: string;
 
     @ApiProperty({ required: false })
     @IsDateString()
     @IsOptional()
-    endDate?: string;
+    startDate?: string
+
+    @ApiProperty({ required: false })
+    @IsDateString()
+    @IsOptional()
+    endDate?: string
 }
