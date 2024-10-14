@@ -36,16 +36,15 @@ export class ProfessionalService implements ProfessionalServiceInterface {
 
     if (startDate) {
         const ISOstartDate = convertToISODate(startDate);
-        filter.date = { $gte: ISOstartDate }; // Adiciona um filtro para >= startDate
+        filter.createdAt = { $gte: new Date(ISOstartDate) }; // Adiciona um filtro para >= startDate
     }
 
     if (endDate) {
         const ISOendDate = convertToISODate(endDate);
-    if (filter.date) {
-        filter.date = { ...filter.date, $lte: ISOendDate }; // Adiciona um filtro para <= endDate
-    } else {
-        filter.date = { $lte: ISOendDate }; // Cria um novo filtro para <= endDate
-    }
+        filter.createdAt = {
+            ...filter.createdAt,
+            $lte: new Date(ISOendDate) // Adiciona um filtro para <= endDate
+        };
     }
  
     if (patientId) {
@@ -66,19 +65,21 @@ export class ProfessionalService implements ProfessionalServiceInterface {
   async postCase(crp: string, body: PostProfessionalReqDto): Promise<GetProfessionalResDto> {
     this.validateAuth(crp);
 
+    console.log(body);
+
     if(crp == null) {
       throw new HttpException('Only professionals can create appointments', HttpStatus.UNAUTHORIZED);
     }
 
     const uuid = generateUuid();
 
-    const createdAppointment = new this.professionalModel({
+    const createdCase = new this.professionalModel({
       ...body,
       crp: crp,
       uuid: uuid,
     });
     
-    const professional = await createdAppointment.save();
+    const professional = await createdCase.save();
 
     return {
       professional: [{
@@ -102,6 +103,7 @@ export class ProfessionalService implements ProfessionalServiceInterface {
         ...caseOld.toObject(), // Copia os dados antigos
         ...body,              // Atualiza com os novos dados
         createdAt: new Date(), // Atualiza a data de criação
+        _id: undefined,
     });
 
     await caseNew.save();

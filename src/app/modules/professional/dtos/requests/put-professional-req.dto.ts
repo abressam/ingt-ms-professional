@@ -1,6 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsOptional, IsNotEmpty, IsDateString, IsObject, IsString, ValidateNested } from 'class-validator';
-import { Type } from 'class-transformer';
+import { IsOptional, IsNotEmpty, IsObject, IsString } from 'class-validator';
 
 export class PutProfessionalReqDto {
     @ApiProperty()
@@ -9,19 +8,12 @@ export class PutProfessionalReqDto {
     uuid: string;
 
     @ApiProperty()
-    @IsDateString()
+    @IsString()
     @IsOptional()
     startOfAppointments?: string;
   
-    @ApiProperty({
-        type: 'object',
-        additionalProperties: {
-            oneOf: [{ type: 'string' }, { type: 'array', items: { type: 'string' } }]
-        }
-    })
+    @ApiProperty()
     @IsObject()
-    @IsOptional()
-    @ValidateNested({ each: true })
-    @Type(() => Object)
-    responses?: Map<string, string | string[]>;
+    @IsNotEmpty()
+    responses: Record<string, string | string[]>;
 }

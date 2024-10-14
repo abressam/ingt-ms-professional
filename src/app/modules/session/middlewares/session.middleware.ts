@@ -29,13 +29,6 @@ export class SessionMiddleware implements NestMiddleware {
       req['patientId'] = jwtPayload['patientId'];
       req['responsibleCrp'] = jwtPayload['responsibleCrp'];
 
-      console.log("jwtPayload:", jwtPayload)
-
-      // console.log("cpfCnpj:", req['cpfCnpj'])
-      // console.log("crp:", req['crp'])
-      // console.log("patientId:", req['patientId'])
-      // console.log("responsibleCrp:", req['responsibleCrp'])
-
       next();
     } catch (error) {
       logger.error(error);
