@@ -71,6 +71,12 @@ export class ProfessionalService implements ProfessionalServiceInterface {
       throw new HttpException('Only professionals can create appointments', HttpStatus.UNAUTHORIZED);
     }
 
+    const caseExists = await this.professionalModel.findOne({ patientId: body.patientId });
+
+    if(caseExists) {
+      throw new HttpException('Pacient already have a case', HttpStatus.BAD_REQUEST);
+    }
+
     const uuid = generateUuid();
 
     const createdCase = new this.professionalModel({
